@@ -6,7 +6,7 @@ using System.Text;
 
 namespace VendingCore.Model
 {
-    public class InventoryItem
+    public class InventoryItem : IInventoryItem
     {
         public string Name { get; set; }
         public int Count { get; set; }

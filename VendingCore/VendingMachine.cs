@@ -10,11 +10,11 @@ namespace VendingCore
 {
     public class VendingMachine
     {
-        public ReadOnlyCollection<InventoryItem> Shelves => _shelves.AsReadOnly();
-        public ReadOnlyCollection<InventoryItem> Money => _moneyInventory.AsReadOnly();
+        public ReadOnlyCollection<IInventoryItem> Shelves => _shelves.AsReadOnly();
+        public ReadOnlyCollection<MoneyItem> Money => _moneyInventory.AsReadOnly();
         public decimal AvailableFunds { get; protected set; }
 
-        public VendingMachine(List<InventoryItem> moneyList = null, List<InventoryItem> shelvesList = null)
+        public VendingMachine(List<MoneyItem> moneyList = null, List<IInventoryItem> shelvesList = null)
         {
             _moneyInventory = moneyList ?? _defaultMoneyTypes;
             _shelves = shelvesList ?? _defaultShelves;
@@ -47,7 +47,7 @@ namespace VendingCore
             var result = AddMoney(money);
             return result;
         }
-        private bool AddMoney(InventoryItem money)
+        private bool AddMoney(MoneyItem money)
         {
             var result = false;
             if (money != null)
@@ -61,28 +61,30 @@ namespace VendingCore
 
         public bool ReturnMoney()
         {
-            throw new NotImplementedException();
+            var result = false;
+            var returnOptions = _moneyInventory.Where(x => x.CanReturn).OrderBy(x=>x.Value).ToList();
+            return result;
         }
 
         #region Private Members
 
-        private readonly List<InventoryItem> _defaultMoneyTypes = new List<InventoryItem>()
+        private readonly List<MoneyItem> _defaultMoneyTypes = new List<MoneyItem>()
         {
-            new InventoryItem() {Name = "Five", Count = 0, Value = 5m},
-            new InventoryItem() {Name = "Dollar", Count = 0, Value = 1m},
-            new InventoryItem() {Name = "Quarter", Count = 30, Value = 0.25m},
-            new InventoryItem() {Name = "Dime", Count = 25, Value = 0.10m},
-            new InventoryItem() {Name = "Nuckle", Count = 60, Value = 0.05m},
+            new MoneyItem() {Name = "Five", Count = 0, Value = 5m},
+            new MoneyItem() {Name = "Dollar", Count = 0, Value = 1m},
+            new MoneyItem() {Name = "Quarter", Count = 30, Value = 0.25m, CanReturn = true},
+            new MoneyItem() {Name = "Dime", Count = 25, Value = 0.10m, CanReturn = true},
+            new MoneyItem() {Name = "Nickle", Count = 60, Value = 0.05m, CanReturn = true},
         };
-        private readonly List<InventoryItem> _defaultShelves = new List<InventoryItem>()
+        private readonly List<IInventoryItem> _defaultShelves = new List<IInventoryItem>()
         {
             new InventoryItem() {Name = "Chips", Count = 10, Value = 0.75m},
             new InventoryItem() {Name = "Pop", Count = 10, Value = 1.25m},
             new InventoryItem() {Name = "Gum", Count = 10, Value = 0.50m},
             new InventoryItem() {Name = "Pretzels", Count = 10, Value = 0.75m},
         };
-        private readonly List<InventoryItem> _moneyInventory;
-        private readonly List<InventoryItem> _shelves;
+        private readonly List<MoneyItem> _moneyInventory;
+        private readonly List<IInventoryItem> _shelves;
 
         #endregion
     }
