@@ -1,4 +1,5 @@
 ﻿using System;
+using VendingCore;
 
 namespace Vending
 {
@@ -6,7 +7,7 @@ namespace Vending
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var machine = new VendingCore.VendingCore();
         }
     }
 }

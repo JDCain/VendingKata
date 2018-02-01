@@ -16,7 +16,7 @@ namespace Vending.Tests
             AddMoneyStringAssert("Quarter", 0.25m);
             AddMoneyStringAssert("Dime", 0.10m);
             AddMoneyStringAssert("Nickel", 0.05m);
-            var machine = new VendingMachine();
+            var machine = new VendingCore.VendingCore();
             Assert.IsFalse(machine.AddMoney("Hamburger"));
         }
         [TestMethod]
@@ -27,12 +27,12 @@ namespace Vending.Tests
             AddMoneyDecimalAssert(0.25m);
             AddMoneyDecimalAssert(0.10m);
             AddMoneyDecimalAssert(0.05m);
-            var machine = new VendingMachine();
+            var machine = new VendingCore.VendingCore();
             Assert.IsFalse(machine.AddMoney(0.36m));
         }
         private static void AddMoneyStringAssert(string amount, decimal expectedValue)
         {
-            var machine = new VendingMachine();
+            var machine = new VendingCore.VendingCore();
             var orginalCount = machine.Money.FirstOrDefault(x => x.Name == amount)?.Count;
             machine.AddMoney(amount);            
             Assert.IsTrue(machine.AvailableFunds == expectedValue);
@@ -40,7 +40,7 @@ namespace Vending.Tests
         }
         private static void AddMoneyDecimalAssert(decimal amount)
         {
-            var machine = new VendingMachine();
+            var machine = new VendingCore.VendingCore();
             var orginalCount = machine.Money.FirstOrDefault(x => x.Value == amount)?.Count;
             machine.AddMoney(amount);
             Assert.IsTrue(machine.AvailableFunds == amount);
@@ -50,7 +50,7 @@ namespace Vending.Tests
         [TestMethod]
         public void ReturnMoneyDefault()
         {
-            var machine = new VendingMachine();
+            var machine = new VendingCore.VendingCore();
             machine.AddMoney(0.25m);
             machine.AddMoney(0.25m);
             var change = machine.ReturnMoney();
@@ -59,7 +59,7 @@ namespace Vending.Tests
         [TestMethod]
         public void VendWithChangeDefault()
         {
-            var machine = new VendingMachine();
+            var machine = new VendingCore.VendingCore();
             machine.AddMoney(1m);
             var selectedItem = machine.Shelves.FirstOrDefault(x => x.Name == "Gum");
             var orginalCount = selectedItem?.Count;
