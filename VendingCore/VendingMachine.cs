@@ -74,7 +74,7 @@ namespace VendingCore
             new MoneyItem() {Name = "Dollar", Count = 0, Value = 1m},
             new MoneyItem() {Name = "Quarter", Count = 30, Value = 0.25m, CanReturn = true},
             new MoneyItem() {Name = "Dime", Count = 25, Value = 0.10m, CanReturn = true},
-            new MoneyItem() {Name = "Nickle", Count = 60, Value = 0.05m, CanReturn = true},
+            new MoneyItem() {Name = "Nickel", Count = 60, Value = 0.05m, CanReturn = true},
         };
         private readonly List<IInventoryItem> _defaultShelves = new List<IInventoryItem>()
         {
