@@ -63,6 +63,7 @@ namespace VendingCore
         {
             var result = false;
             var returnOptions = _moneyInventory.Where(x => x.CanReturn).OrderBy(x=>x.Value).ToList();
+
             return result;
         }
 

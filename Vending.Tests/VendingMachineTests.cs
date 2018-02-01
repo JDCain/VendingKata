@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VendingCore;
 
@@ -31,14 +33,18 @@ namespace Vending.Tests
         private static void AddMoneyStringAssert(string amount, decimal expectedValue)
         {
             var machine = new VendingMachine();
-            machine.AddMoney(amount);
+            var orginalCount = machine.Money.FirstOrDefault(x => x.Name == amount)?.Count;
+            machine.AddMoney(amount);            
             Assert.IsTrue(machine.AvailableFunds == expectedValue);
+            Assert.IsTrue(machine.Money.FirstOrDefault(x=>x.Name == amount)?.Count == (orginalCount + 1));
         }
         private static void AddMoneyDecimalAssert(decimal amount)
         {
             var machine = new VendingMachine();
+            var orginalCount = machine.Money.FirstOrDefault(x => x.Value == amount)?.Count;
             machine.AddMoney(amount);
             Assert.IsTrue(machine.AvailableFunds == amount);
+            Assert.IsTrue(machine.Money.FirstOrDefault(x => x.Value == amount)?.Count == (orginalCount + 1));
         }
     }
 }
