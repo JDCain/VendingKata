@@ -20,13 +20,13 @@ namespace VendingCore
             _shelves = shelvesList ?? _defaultShelves;
         }
 
-        public bool Vend(InventoryItem item)
+        public bool Vend(IInventoryItem item)
         {
             var result = false;
             if (item != null 
                 && Shelves.Contains(item) 
                 && (item.Count > 0 
-                    && item.Value >= AvailableFunds))
+                    && item.Value <= AvailableFunds))
             {
                 item.Count--;
                 AvailableFunds -= item.Value;
