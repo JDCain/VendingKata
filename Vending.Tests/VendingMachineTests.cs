@@ -48,7 +48,7 @@ namespace Vending.Tests
         }
 
         [TestMethod]
-        public void ReturnMoney()
+        public void ReturnMoneyDefault()
         {
             var machine = new VendingMachine();
             machine.AddMoney(0.25m);
@@ -57,7 +57,7 @@ namespace Vending.Tests
             Assert.IsTrue(change.FirstOrDefault(x=>x.Value == 0.25m)?.Count == 2);
         }
         [TestMethod]
-        public void VendWithChange()
+        public void VendWithChangeDefault()
         {
             var machine = new VendingMachine();
             machine.AddMoney(1m);
