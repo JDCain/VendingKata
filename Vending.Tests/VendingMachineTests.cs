@@ -46,5 +46,15 @@ namespace Vending.Tests
             Assert.IsTrue(machine.AvailableFunds == amount);
             Assert.IsTrue(machine.Money.FirstOrDefault(x => x.Value == amount)?.Count == (orginalCount + 1));
         }
+
+        [TestMethod]
+        public void ReturnMoney()
+        {
+            var machine = new VendingMachine();
+            machine.AddMoney(0.25m);
+            machine.AddMoney(0.25m);
+            var change = machine.ReturnMoney();
+            Assert.IsTrue(change.FirstOrDefault(x=>x.Value == 0.25m)?.Count == 2);
+        }
     }
 }

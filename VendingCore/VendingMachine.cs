@@ -59,12 +59,27 @@ namespace VendingCore
             return result;
         }
 
-        public bool ReturnMoney()
+        public List<MoneyItem> ReturnMoney()
         {
-            var result = false;
-            var returnOptions = _moneyInventory.Where(x => x.CanReturn).OrderBy(x=>x.Value).ToList();
+            var change = new List<MoneyItem>();
+            var returnOptions = _moneyInventory.Where(x => x.CanReturn).OrderByDescending(x=>x.Value).ToList();
+            foreach (var returnOption in returnOptions)
+            {
 
-            return result;
+                var coinNumber = AvailableFunds / returnOption.Value;
+                if ((coinNumber % 1) == 0)
+                {
+                    var coinCount = (int) coinNumber;
+                    returnOption.Count -= coinCount;
+                    change.Add(new MoneyItem()
+                    {
+                        Name = returnOption.Name,
+                        Value = returnOption.Value,
+                        Count = coinCount,
+                    });
+                }
+            }
+            return change;
         }
 
         #region Private Members
