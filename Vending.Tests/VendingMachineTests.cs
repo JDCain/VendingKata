@@ -56,5 +56,17 @@ namespace Vending.Tests
             var change = machine.ReturnMoney();
             Assert.IsTrue(change.FirstOrDefault(x=>x.Value == 0.25m)?.Count == 2);
         }
+        [TestMethod]
+        public void VendWithChange()
+        {
+            var machine = new VendingMachine();
+            machine.AddMoney(1m);
+            var selectedItem = machine.Shelves.FirstOrDefault(x => x.Name == "Gum");
+            var orginalCount = selectedItem?.Count;
+            Assert.IsTrue(machine.Vend(selectedItem));
+            Assert.IsTrue(selectedItem?.Count == (orginalCount - 1));
+            var change = machine.ReturnMoney();
+            Assert.IsTrue(change.FirstOrDefault(x => x.Value == 0.25m)?.Count == 2);
+        }
     }
 }
