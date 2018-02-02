@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Vending.Tests
 {
     [TestClass]
-    public class VendingMachineTests
+    public class VendingCoreTests
     {
         [TestMethod]
         public void AddMoneyDefaultStrings()
