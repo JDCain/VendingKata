@@ -1,4 +1,4 @@
-﻿namespace VendingCore.Model
+﻿namespace Vending.Model
 {
     public interface IInventoryItem
     {

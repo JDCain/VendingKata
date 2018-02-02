@@ -1,13 +1,13 @@
 ﻿using System;
-using VendingCore;
+using Vending;
 
-namespace Vending
+namespace VendingConsole
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var machine = new VendingCore.VendingCore();
+            var machine = new Machine();
         }
     }
 }

@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using VendingCore.Model;
+using Vending.Model;
 
-namespace VendingCore
+namespace Vending
 {
-    public class VendingCore
+    public class Core
     {
-        public ReadOnlyCollection<IInventoryItem> Shelves => _shelves.AsReadOnly();
+        public ReadOnlyCollection<IInventoryItem> Inventory => _shelves.AsReadOnly();
         public ReadOnlyCollection<MoneyItem> Money => _moneyInventory.AsReadOnly();
         public decimal AvailableFunds { get; protected set; }
 
-        public VendingCore(List<MoneyItem> moneyList, List<IInventoryItem> shelvesList)
+        public Core(IEnumerable<MoneyItem> money, IEnumerable<IInventoryItem> inventory)
         {
-            _moneyInventory = moneyList;
-            _shelves = shelvesList;
+            _moneyInventory = money as List<MoneyItem>;
+            _shelves = inventory as List<IInventoryItem>;
         }
 
         public bool Vend(IInventoryItem item)
         {
             var result = false;
             if (item != null 
-                && Shelves.Contains(item) 
+                && Inventory.Contains(item) 
                 && (item.Count > 0 
                     && item.Value <= AvailableFunds))
             {

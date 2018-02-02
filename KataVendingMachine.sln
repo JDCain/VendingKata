@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingCore", "VendingCore\VendingCore.csproj", "{E6E52D63-5058-4036-A1C7-62F2D65876EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vending", "Vending\Vending.csproj", "{E6E52D63-5058-4036-A1C7-62F2D65876EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vending.Tests", "Vending.Tests\Vending.Tests.csproj", "{6E9540EC-524A-493E-B0D5-F85EC5273D6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vending.Tests", "Vending.Tests\Vending.Tests.csproj", "{6E9540EC-524A-493E-B0D5-F85EC5273D6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vending", "Vending\Vending.csproj", "{D6AFCDD9-8059-4ACF-A8FB-DA9769ABA233}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vending.Console", "Vending.Console\Vending.Console.csproj", "{D6AFCDD9-8059-4ACF-A8FB-DA9769ABA233}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
