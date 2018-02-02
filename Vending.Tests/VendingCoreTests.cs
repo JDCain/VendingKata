@@ -66,6 +66,7 @@ namespace Vending.Tests
             Assert.IsTrue(selectedItem?.Count == (orginalCount - 1));
             var change = machine.ReturnMoney();
             Assert.IsTrue(change.FirstOrDefault(x => x.Value == 0.25m)?.Count == 2);
+            Assert.IsTrue(machine.AvailableFunds == 0);
         }
     }
 }

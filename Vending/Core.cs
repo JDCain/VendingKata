@@ -67,6 +67,10 @@ namespace Vending
                 if ((coinNumber % 1) == 0)
                 {
                     var coinCount = (int) coinNumber;
+                    if (coinCount > returnOption.Count)
+                    {
+                        coinCount = returnOption.Count;
+                    }
                     returnOption.Count -= coinCount;
                     change.Add(new MoneyItem()
                     {
@@ -74,9 +78,10 @@ namespace Vending
                         Value = returnOption.Value,
                         Count = coinCount,
                     });
+                    AvailableFunds -= (returnOption.Value * coinCount);
                 }
             }
-            return change;
+            return change.Where(x=>x.Count >0 ).ToList();
         }
 
         #region Private Members
