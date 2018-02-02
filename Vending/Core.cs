@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Vending.Model;
@@ -64,9 +65,9 @@ namespace Vending
             {
 
                 var coinNumber = AvailableFunds / returnOption.Value;
-                if ((coinNumber % 1) == 0)
-                {
-                    var coinCount = (int) coinNumber;
+                //if ((coinNumber % 1) == 0)
+                //{
+                    var coinCount = (int)Math.Floor(coinNumber);
                     if (coinCount > returnOption.Count)
                     {
                         coinCount = returnOption.Count;
@@ -79,7 +80,7 @@ namespace Vending
                         Count = coinCount,
                     });
                     AvailableFunds -= (returnOption.Value * coinCount);
-                }
+                //}
             }
             return change.Where(x=>x.Count >0 ).ToList();
         }
