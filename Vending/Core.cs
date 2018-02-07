@@ -17,13 +17,11 @@ namespace Vending
 
         public bool IsExactChangeRequired()
         {
-            var result = true;
             var maxInput = _moneyInventory.OrderByDescending(x => x.Value).FirstOrDefault();
-            var valueDecimal = Money.Sum(x => x.Value * x.Count);
-            var minOutput = _moneyInventory.Where(x => x.CanReturn).OrderBy(x => x.Value).FirstOrDefault();
+            var totalMoneySum = Money.Sum(x => x.Value * x.Count);            
             var cheapestInventory = _shelves.OrderBy(x => x.Value).FirstOrDefault();
 
-            result = (maxInput.Value - cheapestInventory.Value) > valueDecimal;
+            var result = (maxInput.Value - cheapestInventory.Value) > totalMoneySum;
             
             return result;
         }

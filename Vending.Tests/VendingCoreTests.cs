@@ -112,5 +112,21 @@ namespace Vending.Tests
             var machine = new Core(almostEmpty, Default.Inventory);
             Assert.IsTrue(machine.ExactChangeRequired);
         }
+
+        [TestMethod]
+        public void ExactChangeNotRequired()
+        {
+            var almostEmpty = new List<MoneyItem>()
+            {
+                new MoneyItem() {Name = "Five", Count = 0, Value = 5m},
+                new MoneyItem() {Name = "Dollar", Count = 0, Value = 1m},
+                new MoneyItem() {Name = "Quarter", Count = 17, Value = 0.25m, CanReturn = true},
+                new MoneyItem() {Name = "Dime", Count = 1, Value = 0.10m, CanReturn = true},
+                new MoneyItem() {Name = "Nickel", Count = 3, Value = 0.05m, CanReturn = true},
+            };
+
+            var machine = new Core(almostEmpty, Default.Inventory);
+            Assert.IsFalse(machine.ExactChangeRequired);
+        }
     }
 }
