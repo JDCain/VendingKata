@@ -13,19 +13,7 @@ namespace Vending
         public ReadOnlyCollection<MoneyItem> Money => _moneyInventory.AsReadOnly();
         public decimal AvailableFunds { get; protected set; }
 
-        public bool ExactChangeRequired => IsExactChangeRequired();
-
-        public bool IsExactChangeRequired()
-        {
-            var maxInput = _moneyInventory.OrderByDescending(x => x.Value).FirstOrDefault();
-            var totalMoneySum = Money.Sum(x => x.Value * x.Count);            
-            var cheapestInventory = _shelves.OrderBy(x => x.Value).FirstOrDefault();
-
-            var result = (maxInput.Value - cheapestInventory.Value) > totalMoneySum;
-            
-            return result;
-        }
-    
+        public bool ExactChangeRequired => IsExactChangeRequired();    
 
         public Core(IEnumerable<MoneyItem> money, IEnumerable<IInventoryItem> inventory)
         {
@@ -96,7 +84,16 @@ namespace Vending
             }
             return change.Where(x=>x.Count >0 ).ToList();
         }
+        private bool IsExactChangeRequired()
+        {
+            var maxInput = _moneyInventory.OrderByDescending(x => x.Value).FirstOrDefault();
+            var totalMoneySum = Money.Sum(x => x.Value * x.Count);
+            var cheapestInventory = _shelves.OrderBy(x => x.Value).FirstOrDefault();
 
+            var result = (maxInput.Value - cheapestInventory.Value) > totalMoneySum;
+
+            return result;
+        }
         #region Private Members
 
         private readonly List<MoneyItem> _moneyInventory;
