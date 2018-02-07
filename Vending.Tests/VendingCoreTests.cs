@@ -61,6 +61,7 @@ namespace Vending.Tests
         public void VendWithChangeDefault()
         {
             var machine = new Core(Default.MoneyTypes, Default.Inventory);
+            Assert.IsFalse(machine.ExactChangeRequired);
             machine.AddMoney(1m);
             var selectedItem = machine.Inventory.FirstOrDefault(x => x.Name == "Gum");
             var orginalCount = selectedItem?.Count;
@@ -73,6 +74,7 @@ namespace Vending.Tests
         [TestMethod]
         public void VendWithLimitedChange()
         {
+            //this ignores exact change required in order to test handling
             var almostEmpty = new List<MoneyItem>()
             {
                 new MoneyItem() {Name = "Five", Count = 0, Value = 5m},
@@ -93,6 +95,22 @@ namespace Vending.Tests
             change.ForEach(x => total += x.Value * x.Count);
             Assert.IsTrue(total == 3.75m);
             Assert.IsTrue(machine.AvailableFunds == 0);
+        }
+
+        [TestMethod]
+        public void ExactChangeIsRequired()
+        {
+            var almostEmpty = new List<MoneyItem>()
+            {
+                new MoneyItem() {Name = "Five", Count = 0, Value = 5m},
+                new MoneyItem() {Name = "Dollar", Count = 0, Value = 1m},
+                new MoneyItem() {Name = "Quarter", Count = 1, Value = 0.25m, CanReturn = true},
+                new MoneyItem() {Name = "Dime", Count = 1, Value = 0.10m, CanReturn = true},
+                new MoneyItem() {Name = "Nickel", Count = 1, Value = 0.05m, CanReturn = true},
+            };
+
+            var machine = new Core(almostEmpty, Default.Inventory);
+            Assert.IsTrue(machine.ExactChangeRequired);
         }
     }
 }

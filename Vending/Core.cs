@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Vending.Model;
+// ReSharper disable All
 
 namespace Vending
 {
@@ -11,6 +12,22 @@ namespace Vending
         public ReadOnlyCollection<IInventoryItem> Inventory => _shelves.AsReadOnly();
         public ReadOnlyCollection<MoneyItem> Money => _moneyInventory.AsReadOnly();
         public decimal AvailableFunds { get; protected set; }
+
+        public bool ExactChangeRequired => IsExactChangeRequired();
+
+        public bool IsExactChangeRequired()
+        {
+            var result = true;
+            var maxInput = _moneyInventory.OrderByDescending(x => x.Value).FirstOrDefault();
+            var valueDecimal = Money.Sum(x => x.Value * x.Count);
+            var minOutput = _moneyInventory.Where(x => x.CanReturn).OrderBy(x => x.Value).FirstOrDefault();
+            var cheapestInventory = _shelves.OrderBy(x => x.Value).FirstOrDefault();
+
+            result = (maxInput.Value - cheapestInventory.Value) > valueDecimal;
+            
+            return result;
+        }
+    
 
         public Core(IEnumerable<MoneyItem> money, IEnumerable<IInventoryItem> inventory)
         {
@@ -65,22 +82,19 @@ namespace Vending
             {
 
                 var coinNumber = AvailableFunds / returnOption.Value;
-                //if ((coinNumber % 1) == 0)
-                //{
-                    var coinCount = (int)Math.Floor(coinNumber);
-                    if (coinCount > returnOption.Count)
-                    {
-                        coinCount = returnOption.Count;
-                    }
-                    returnOption.Count -= coinCount;
-                    change.Add(new MoneyItem()
-                    {
-                        Name = returnOption.Name,
-                        Value = returnOption.Value,
-                        Count = coinCount,
-                    });
-                    AvailableFunds -= (returnOption.Value * coinCount);
-                //}
+                var coinCount = (int)Math.Floor(coinNumber);
+                if (coinCount > returnOption.Count)
+                {
+                    coinCount = returnOption.Count;
+                }
+                returnOption.Count -= coinCount;
+                change.Add(new MoneyItem()
+                {
+                    Name = returnOption.Name,
+                    Value = returnOption.Value,
+                    Count = coinCount,
+                });
+                AvailableFunds -= (returnOption.Value * coinCount);             
             }
             return change.Where(x=>x.Count >0 ).ToList();
         }
