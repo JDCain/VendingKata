@@ -102,6 +102,7 @@ namespace Vending
             }
             return change.Where(x=>x.Count >0 ).ToList();
         }
+
         private bool IsExactChangeRequired()
         {
             var maxInput = _moneyInventory.OrderByDescending(x => x.Value).FirstOrDefault();

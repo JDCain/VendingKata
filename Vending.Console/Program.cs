@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Serialization;
 using Vending;
 using Vending.Model;
 using static System.Console;
@@ -8,11 +7,11 @@ namespace VendingConsole
 {
     class Program
     {
-        static readonly Core _machine = new Core(Default.MoneyTypes, Default.Inventory);
+        private static readonly Core _machine = new Core(Default.MoneyTypes, Default.Inventory);
         private static IInventoryItem _selectedItem;
         private static object _reason;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var exit = false;
             while (exit == false)
