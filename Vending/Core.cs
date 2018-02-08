@@ -27,7 +27,7 @@ namespace Vending
             if (item != null 
                 && Inventory.Contains(item) 
                 && (item.Count > 0 
-                    && item.Value <= AvailableFunds))
+                    && item.Value <= AvailableFunds && !ExactChangeRequired))
             {
                 item.Count--;
                 AvailableFunds -= item.Value;
@@ -53,11 +53,29 @@ namespace Vending
             var result = false;
             if (money != null)
             {
-                money.Count++;
-                AvailableFunds += money.Value;
-                result = true;
+                if (ExactChangeRequired)
+                {
+                    if (money.CanReturn)
+                    {
+                        AddMoneyToSystem(money);
+                        result = true;
+                    }
+                }
+                else
+                {
+                    AddMoneyToSystem(money);
+                    result = true;
+                }
+                
             }
             return result;
+        }
+
+        private void AddMoneyToSystem(MoneyItem money)
+        {
+            money.Count++;
+            AvailableFunds += money.Value;
+            
         }
 
         public List<MoneyItem> ReturnMoney()

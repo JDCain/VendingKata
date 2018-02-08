@@ -81,7 +81,7 @@ namespace Vending.Tests
                 new MoneyItem() {Name = "Dollar", Count = 0, Value = 1m},
                 new MoneyItem() {Name = "Quarter", Count = 10, Value = 0.25m, CanReturn = true},
                 new MoneyItem() {Name = "Dime", Count = 6, Value = 0.10m, CanReturn = true},
-                new MoneyItem() {Name = "Nickel", Count = 20, Value = 0.05m, CanReturn = true},
+                new MoneyItem() {Name = "Nickel", Count = 300, Value = 0.05m, CanReturn = true},
             };
 
             var machine = new Core(almostEmpty, Default.Inventory);
@@ -111,6 +111,8 @@ namespace Vending.Tests
 
             var machine = new Core(almostEmpty, Default.Inventory);
             Assert.IsTrue(machine.ExactChangeRequired);
+            Assert.IsFalse(machine.AddMoney("Five"));
+            
         }
 
         [TestMethod]
