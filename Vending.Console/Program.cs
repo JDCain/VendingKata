@@ -10,7 +10,7 @@ namespace VendingConsole
     {
         static readonly Core _machine = new Core(Default.MoneyTypes, Default.Inventory);
         private static IInventoryItem _selectedItem;
-        private static object reason;
+        private static object _reason;
 
         static void Main(string[] args)
         {
@@ -39,7 +39,11 @@ namespace VendingConsole
                 {
                     case 0:
                         DisplayInventory();
-                        InputSelectAction(x => _selectedItem = _machine.Inventory[x]);
+                        InputSelectAction(x =>
+                        {
+                            _selectedItem = _machine.Inventory[x];
+                            return _selectedItem != null;
+                        });
                         break;
                     case 1:
                         DisplayFunds();
@@ -61,17 +65,17 @@ namespace VendingConsole
                             {
                                 if (_machine.AvailableFunds < _selectedItem.Value)
                                 {
-                                    reason = "Insufficient Funds";
+                                    _reason = "Insufficient Funds";
                                 }
                                 else if (_selectedItem.Count <= 0)
                                 {
-                                    reason = "Sold Out";
+                                    _reason = "Sold Out";
                                 }
                                 else
                                 {
-                                    reason = "Unknown Error";
+                                    _reason = "Unknown Error";
                                 }
-                                WriteLine($"Vending Failed: {reason}");
+                                WriteLine($"Vending Failed: {_reason}");
                             }
                             
                         }
@@ -117,7 +121,7 @@ namespace VendingConsole
             return null;
         }
 
-        static void DisplayInventory()
+        private static void DisplayInventory()
         {
             foreach (var item in _machine.Inventory)
             {
@@ -125,7 +129,7 @@ namespace VendingConsole
             }          
         }
 
-        static void DisplayMoney()
+        private static void DisplayMoney()
         {
             foreach (var item in _machine.Money)
             {
@@ -133,7 +137,7 @@ namespace VendingConsole
             }
         }
 
-        static void DisplayMoneyOptions()
+        private static void DisplayMoneyOptions()
         {
             foreach (var item in _machine.Money)
             {
@@ -141,19 +145,25 @@ namespace VendingConsole
             }
         }
 
-        static void DisplayFunds()
+        private static void DisplayFunds()
         {
-            WriteLine($"Available Funds: {_machine.AvailableFunds}");
+            if (_machine.ExactChangeRequired)
+            {
+                WriteLine($"EXACT CHANGE REQUIRED!");
+            }
+            WriteLine($"Available Funds: ${_machine.AvailableFunds}");
         }
 
-        static void InputSelectAction(Action<int> action)
+        private static bool InputSelectAction(Func<int, bool> action)
         {
+            var result = false;
             var input = GetInput();
             if (input != null)
             {
                 int v = input ?? default(int);
-                action.Invoke(v);
+                result = action.Invoke(v);
             }
+            return result;
         }
     }
 }
